@@ -92,6 +92,7 @@ class AuthenticationHelper extends BiometricPrompt.AuthenticationCallback
             .setSubtitle((String) call.argument("biometricHint"))
             .setConfirmationRequired((Boolean) call.argument("sensitiveTransaction"))
             .setConfirmationRequired((Boolean) call.argument("sensitiveTransaction")).setCancelable(false);
+      
 
     int allowedAuthenticators =
         BiometricManager.Authenticators.BIOMETRIC_WEAK
@@ -137,6 +138,11 @@ class AuthenticationHelper extends BiometricPrompt.AuthenticationCallback
     }
     activity.getApplication().unregisterActivityLifecycleCallbacks(this);
   }
+
+        public boolean isPromptShowing() {
+    return biometricPrompt != null;
+}
+
 
   @SuppressLint("SwitchIntDef")
   @Override
@@ -227,15 +233,15 @@ class AuthenticationHelper extends BiometricPrompt.AuthenticationCallback
     }
   }
 
-     @Override
+@Override
 public void onBackPressed() {
-    if (authenticationHelper != null && authenticationHelper.isPromptShowing) {
-        // Dismiss the biometric prompt
-        authenticationHelper.stopAuthentication();
+    if (authenticationHelper != null && authenticationHelper.isPromptShowing()) {
+        // Do nothing (or provide feedback to the user if needed)
     } else {
         super.onBackPressed();
     }
 }
+
 
 
 
