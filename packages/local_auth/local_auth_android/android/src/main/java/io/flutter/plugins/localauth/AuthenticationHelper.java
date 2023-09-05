@@ -69,6 +69,8 @@ class AuthenticationHelper extends BiometricPrompt.AuthenticationCallback
   private final UiThreadExecutor uiThreadExecutor;
   private boolean activityPaused = false;
   private BiometricPrompt biometricPrompt;
+  private boolean isPromptShowing = false;
+
 
   AuthenticationHelper(
       Lifecycle lifecycle,
@@ -114,6 +116,7 @@ class AuthenticationHelper extends BiometricPrompt.AuthenticationCallback
     }
     biometricPrompt = new BiometricPrompt(activity, uiThreadExecutor, this);
     biometricPrompt.authenticate(promptInfo);
+    isPromptShowing = true;
   }
 
   /** Cancels the biometric authentication. */
@@ -122,6 +125,8 @@ class AuthenticationHelper extends BiometricPrompt.AuthenticationCallback
       biometricPrompt.cancelAuthentication();
       biometricPrompt = null;
     }
+      isPromptShowing = false;
+
   }
 
   /** Stops the biometric listener. */
@@ -221,6 +226,18 @@ class AuthenticationHelper extends BiometricPrompt.AuthenticationCallback
           });
     }
   }
+
+     @Override
+public void onBackPressed() {
+    if (authenticationHelper != null && authenticationHelper.isPromptShowing) {
+        // Dismiss the biometric prompt
+        authenticationHelper.stopAuthentication();
+    } else {
+        super.onBackPressed();
+    }
+}
+
+
 
   @Override
   public void onPause(@NonNull LifecycleOwner owner) {
