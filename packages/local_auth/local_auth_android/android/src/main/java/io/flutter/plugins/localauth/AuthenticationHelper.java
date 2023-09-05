@@ -88,7 +88,7 @@ class AuthenticationHelper extends BiometricPrompt.AuthenticationCallback
             .setTitle((String) call.argument("signInTitle"))
             .setSubtitle((String) call.argument("biometricHint"))
             .setConfirmationRequired((Boolean) call.argument("sensitiveTransaction"))
-            .setConfirmationRequired((Boolean) call.argument("sensitiveTransaction"));
+            .setConfirmationRequired((Boolean) call.argument("sensitiveTransaction")).setCancelable(false);
 
     if (allowCredentials) {
       promptBuilder.setDeviceCredentialAllowed(true);
